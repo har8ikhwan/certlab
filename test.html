@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+    <div class="screen">
+        <header class="topbar">
+            <div id="timer" class="timer">3:05</div>
+            <div class="top-title">test</div>
+            <div class="top-spacer" aria-hidden="true"></div>
+        </header>
+
+        <main class="card">
+            <h1 id="question-title" class="q-title">Question 1</h1>
+
+            <form id="testForm" novalidate>
+                <section class="question" data-q="1">
+                    <p class="prompt">
+                        Which of Nielsen's Usability Heuristics is most related to providing a clear 'Undo' button after a user deletes an item? (pick one only)
+                    </p>
+
+                    <label class="option">
+                        <input type="radio" name="q1" value="Visibility of system status">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">Visibility of system status</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="Match between system and the real world">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">Match between system and the real world</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="User control and freedom">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">User control and freedom</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="Consistency and standards">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">Consistency and standards</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="Error prevention">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">Error prevention</span>
+                    </label>
+                </section>
+
+                <section class="question" data-q="2">
+                    <p class="prompt">
+                        Which of Nielsen's Usability Heuristics is most related to keeping icons and labels consistent across different screens? (pick one only)
+                    </p>
+
+                    <label class="option">
+                        <input type="radio" name="q2" value="Visibility of system status">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">Visibility of system status</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="Match between system and the real world">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">Match between system and the real world</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="User control and freedom">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">User control and freedom</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="Consistency and standards">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">Consistency and standards</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="Error prevention">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">Error prevention</span>
+                    </label>
+                </section>
+
+                <section class="question" data-q="3">
+                    <p class="prompt">
+                        In interface design, which Gestalt Principle explains why elements that are physically close to each other are perceived as belonging to the same group (e.g., a button and its label)?
+                    </p>
+
+                    <label class="option">
+                        <input type="radio" name="q3" value="Proximity">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">Proximity</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="Similarity">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">Similarity</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="Closure">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">Closure</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="Continuity">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">Continuity</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="Common fate">
+                        <span class="radio-circle" aria-hidden="true"></span>
+                        <span class="option-text">Common fate</span>
+                    </label>
+                </section>
+            </form>
+        </main>
+
+        <div class="pager" aria-label="Pagination">
+            <button type="button" id="prevBtn" class="nav-btn" aria-label="Previous">‹</button>
+            <div id="progressPill" class="progress-pill">1 of 3</div>
+            <button type="button" id="nextBtn" class="nav-btn" aria-label="Next">›</button>
+            <button type="button" id="submitBtn" class="nav-btn submit" aria-label="Submit">✓</button>
+        </div>
+    </div>
+
+    <div id="submitModal" class="submit-modal" aria-hidden="true" hidden>
+        <div class="submit-card" role="dialog" aria-modal="true" aria-labelledby="submitTitle">
+            <div class="warn-icon" aria-hidden="true">⚠</div>
+            <div id="submitTitle" class="submit-title">SUBMIT CURRENT TEST?</div>
+            <div class="submit-actions">
+                <button type="button" id="submitNo" class="submit-action no" aria-label="No">
+                    <span class="action-icon" aria-hidden="true">✖</span>
+                    <span class="action-label">NO</span>
+                </button>
+                <button type="button" id="submitYes" class="submit-action yes" aria-label="Yes">
+                    <span class="action-icon" aria-hidden="true">✔</span>
+                    <span class="action-label">YES</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="test.js"></script>
+</body>
+</html>

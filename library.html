@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Library — CertLab</title>
+  <link rel="stylesheet" href="library.css">
+</head>
+<body>
+  <div class="screen">
+    <header class="lib-header">
+      <a class="back" href="menunotesongoing.html" aria-label="Back to landing">‹</a>
+
+      <div class="header-title">Library</div>
+
+      <div class="menu-wrap">
+        <button class="dots" aria-label="open menu" aria-expanded="false">⋯</button>
+        <div class="menu-panel" aria-hidden="true" style="display:none" role="menu">
+          <a class="menu-btn" href="profile.html" role="menuitem">👤 Profile</a>
+          <a class="menu-btn" href="landingpage.html" role="menuitem">🏠 Home</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="lib-main">
+      <h2 class="section-title">Your Own Notes</h2>
+
+    <div class="note-list" role="list">
+      <article class="note-card" role="listitem" data-href="selfnote.html" tabindex="0" aria-label="Open notes: Google Project Management Professional Certificate">
+        <div class="note-title">Google Project Management Professional Certificate</div>
+        <div class="note-desc">Peer-reviewed, evidence-based educational materials to advance your career in HCI design. Complete hands-on projects & build your portfolio.</div>
+      </article>
+
+        <article class="note-card" role="listitem" data-href="selfnote.html" tabindex="0" aria-label="Open course: Best Human Computer Interaction Courses & Certificates">
+          <div class="note-title">Best Human Computer Interaction Courses & Certificates [2026]</div>
+          <div class="note-desc">Peer-reviewed, evidence-based educational materials to advance your career in HCI design. Complete hands-on projects & build your portfolio.</div>
+        </article> 
+
+        <article class="note-card" role="listitem" data-href="selfnote.html" tabindex="0" aria-label="Open notes: Python Programming Certificate By Google and Nvidia">
+          <div class="note-title">Python Programming Certificate By Google and Nvidia</div>
+          <div class="note-desc">Peer-reviewed, evidence-based educational materials to advance your career in HCI design. Complete hands-on projects & build your portfolio.</div>
+        </article>
+
+        <article class="note-card" role="listitem" data-href="selfnote.html" tabindex="0" aria-label="Open course: Causal Diagrams: Draw Your Assumptions Before Your Conclusions">
+          <div class="note-title">Causal Diagrams: Draw Your Assumptions Before Your Conclusions</div>
+          <div class="note-desc">Learn simple graphical rules that allow you to use intuitive pictures to improve study design and data analysis for causal inference.</div>
+        </article>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Menu toggle
+    (function(){
+      const wraps = Array.prototype.slice.call(document.querySelectorAll('.menu-wrap'));
+
+      function closeAll(exceptPanel){
+        wraps.forEach(function(wrap){
+          const panel = wrap.querySelector('.menu-panel');
+          const btn = wrap.querySelector('.dots');
+          if(!panel || !btn) return;
+          if(exceptPanel && panel === exceptPanel) return;
+          panel.style.display = 'none';
+          panel.setAttribute('aria-hidden', 'true');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      }
+
+      wraps.forEach(function(wrap){
+        const btn = wrap.querySelector('.dots');
+        const panel = wrap.querySelector('.menu-panel');
+        if(!btn || !panel) return;
+
+        panel.style.display = 'none';
+        panel.setAttribute('aria-hidden', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+
+        btn.addEventListener('click', function(e){
+          e.stopPropagation();
+          const isHidden = panel.getAttribute('aria-hidden') === 'true';
+          closeAll(panel);
+          panel.setAttribute('aria-hidden', String(!isHidden));
+          panel.style.display = isHidden ? 'flex' : 'none';
+          btn.setAttribute('aria-expanded', String(isHidden));
+        });
+      });
+
+      document.addEventListener('click', function(){ closeAll(); });
+      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeAll(); });
+    })();
+
+    // Card navigation
+    document.querySelectorAll('.note-card[data-href]').forEach(function(card){
+      card.addEventListener('click', function(){
+        location.href = card.dataset.href;
+      });
+      card.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          location.href = card.dataset.href;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

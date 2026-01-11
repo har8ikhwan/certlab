@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>New Password — CertLab</title>
+  <link rel="stylesheet" href="newpass.css">
+</head>
+<body>
+  <div class="screen">
+    <header class="top-logo" role="banner">
+      <div class="logo">cert<span>lab</span>.</div>
+    </header>
+
+    <main class="wrap">
+      <section class="np-card" aria-labelledby="np-title">
+        <h2 id="np-title" class="np-title">New Password</h2>
+        <p id="npHint" class="np-hint" aria-live="polite"></p>
+
+        <form id="newPassForm" class="np-form" action="#" method="post" novalidate>
+          <label class="field">
+            <span class="label-text">New Password</span>
+            <input id="pass1" class="input" type="password" placeholder="Enter new password" required>
+          </label>
+
+          <label class="field">
+            <span class="label-text">Confirm Password</span>
+            <input id="pass2" class="input" type="password" placeholder="Confirm new password" required>
+          </label>
+
+          <div id="npMsg" class="np-msg" role="status" aria-live="polite" hidden></div>
+
+          <button class="btn-primary" type="submit">Update Password</button>
+          <a class="btn-secondary" href="login.html">Back to Login</a>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      var hint = document.getElementById('npHint');
+      var form = document.getElementById('newPassForm');
+      var pass1 = document.getElementById('pass1');
+      var pass2 = document.getElementById('pass2');
+      var msg = document.getElementById('npMsg');
+
+      function showMessage(text, ok){
+        msg.textContent = text;
+        msg.classList.toggle('ok', !!ok);
+        msg.classList.toggle('error', !ok);
+        msg.hidden = false;
+      }
+
+      try {
+        var email = sessionStorage.getItem('fp_email');
+        if (hint) hint.textContent = email ? ('Updating password for ' + email + '.') : 'Update your password below.';
+      } catch (e) {
+        if (hint) hint.textContent = 'Update your password below.';
+      }
+
+      if (!form || !pass1 || !pass2 || !msg) return;
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+
+        var p1 = (pass1.value || '').trim();
+        var p2 = (pass2.value || '').trim();
+
+        if (!p1 || !p2){
+          showMessage('Please fill in both password fields.', false);
+          if (!p1) pass1.focus(); else pass2.focus();
+          return;
+        }
+
+        if (p1.length < 6){
+          showMessage('Password must be at least 6 characters.', false);
+          pass1.focus();
+          return;
+        }
+
+        if (p1 !== p2){
+          showMessage('Passwords do not match.', false);
+          pass2.focus();
+          return;
+        }
+
+        // Demo-only: pretend password updated
+        showMessage('Password updated successfully.', true);
+        pass1.value = '';
+        pass2.value = '';
+
+        try {
+          sessionStorage.removeItem('fp_tac');
+        } catch (e2) {}
+
+        setTimeout(function(){
+          location.href = 'login.html';
+        }, 700);
+      });
+    })();
+  </script>
+</body>
+</html>

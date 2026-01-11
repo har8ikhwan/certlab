@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Certificate — CertLab</title>
+  <link rel="stylesheet" href="certificate.css">
+</head>
+<body>
+  <div class="screen">
+    <header class="cert-header">
+    <style>
+      .home,
+      .home:visited {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .home:hover,
+      .home:focus {
+        text-decoration: none;
+      }
+    </style>
+
+    <a class="back" href="profile.html">‹ back</a>
+      <div class="menu-wrap">
+        <button class="dots" aria-label="open menu" aria-expanded="false">⋯</button>
+        <div class="menu-panel" aria-hidden="true" style="display:none" role="menu">
+          <button class="menu-btn" type="button" data-action="share">Share</button>
+          <button class="menu-btn" type="button" data-action="print">Print</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="cert-main">
+      <div class="cert-frame">
+        <!-- Insert your certificate image here -->
+        <img id="cert-image" src="pic/cert.png" alt="certificate" />
+      </div>
+
+      <button id="download" class="download" aria-label="Download certificate">⬇︎</button>
+    </main>
+  </div>
+
+  <script>
+    // Menu toggle (shared behavior)
+    (function(){
+      const wraps = Array.prototype.slice.call(document.querySelectorAll('.menu-wrap'));
+
+      function closeAll(exceptPanel){
+        wraps.forEach(function(wrap){
+          const panel = wrap.querySelector('.menu-panel');
+          const btn = wrap.querySelector('.dots');
+          if(!panel || !btn) return;
+          if(exceptPanel && panel === exceptPanel) return;
+          panel.style.display = 'none';
+          panel.setAttribute('aria-hidden', 'true');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      }
+
+      wraps.forEach(function(wrap){
+        const btn = wrap.querySelector('.dots');
+        const panel = wrap.querySelector('.menu-panel');
+        if(!btn || !panel) return;
+
+        panel.style.display = 'none';
+        panel.setAttribute('aria-hidden', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+
+        btn.addEventListener('click', function(e){
+          e.stopPropagation();
+          const isHidden = panel.getAttribute('aria-hidden') === 'true';
+          closeAll(panel);
+          panel.setAttribute('aria-hidden', String(!isHidden));
+          panel.style.display = isHidden ? 'flex' : 'none';
+          btn.setAttribute('aria-expanded', String(isHidden));
+        });
+      });
+
+      document.addEventListener('click', function(){ closeAll(); });
+      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeAll(); });
+    })();
+
+    // Menu actions
+    (function(){
+      const panel = document.querySelector('.menu-panel');
+      const btnShare = document.querySelector('.menu-btn[data-action="share"]');
+      const btnPrint = document.querySelector('.menu-btn[data-action="print"]');
+
+      function closeMenu(){
+        if(!panel) return;
+        panel.style.display = 'none';
+        panel.setAttribute('aria-hidden', 'true');
+        const dots = document.querySelector('.dots');
+        if(dots) dots.setAttribute('aria-expanded', 'false');
+      }
+
+      async function doShare(){
+        const shareData = {
+          title: document.title || 'Certificate',
+          text: 'My certificate',
+          url: location.href
+        };
+
+        try{
+          if(navigator.share){
+            await navigator.share(shareData);
+            return;
+          }
+
+          // Fallback: copy link
+          if(navigator.clipboard && navigator.clipboard.writeText){
+            await navigator.clipboard.writeText(location.href);
+            alert('Link copied. You can paste it into any app to share.');
+            return;
+          }
+
+          // Last resort
+          window.prompt('Copy this link to share:', location.href);
+        }catch(err){
+          // If user cancels share, do nothing
+        }
+      }
+
+      if(btnShare){
+        btnShare.addEventListener('click', function(){
+          closeMenu();
+          doShare();
+        });
+      }
+
+      if(btnPrint){
+        btnPrint.addEventListener('click', function(){
+          closeMenu();
+          window.print();
+        });
+      }
+    })();
+
+    // download handler: tries to download the image src
+    document.getElementById('download').addEventListener('click', function(){
+      const img = document.getElementById('cert-image');
+      if(!img || !img.src){ alert('No certificate available'); return; }
+      // create an anchor and trigger download
+      const a = document.createElement('a');
+      a.href = img.src;
+      a.download = 'certificate.jpg';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+  </script>
+</body>
+</html>

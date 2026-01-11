@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Menu Notes — CertLab</title>
+  <link rel="stylesheet" href="menunotes.css">
+</head>
+<body>
+  <div class="screen">
+    <header class="mn-header">
+      <button class="back" onclick="location.href='landingpage.html'">‹ Back</button>
+      <div class="title">NOTES : HCL</div>
+      <div class="menu-wrap">
+        <button class="dots" aria-label="open menu" aria-expanded="false">⋯</button>
+        <div class="menu-panel" aria-hidden="true" style="display:none" role="menu">
+          <a class="menu-btn" href="profile.html" role="menuitem">👤 Profile</a>
+          <a class="menu-btn" href="landingpage.html" role="menuitem">🏠 Home</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="mn-main">
+      <div class="chapters">
+        <div class="chapter">
+          <button class="chapter-btn" data-target="ch1">CHAPTER 1</button>
+          <div id="ch1" class="chapter-body">
+            <button class="item item-btn" type="button" data-href="video-note.html" aria-label="Chapter 1 video">
+              <div class="item-text">TOPIC 1 INTRO TO HCL<br><span class="muted">VIDEO</span></div>
+              <div class="item-icon video">▶</div>
+            </button>
+            <button class="item item-btn" type="button" data-href="note-exercise.html" aria-label="Chapter 1 file">
+              <div class="item-text">TOPIC 1 INTRO TO HCL<br><span class="muted">FILE</span></div>
+              <div class="item-icon file">📁</div>
+            </button>
+            <button class="item item-btn" type="button" disabled aria-disabled="true" aria-label="Chapter 1 test">
+              <div class="item-text">TEST</div>
+              <div class="item-icon done">✔</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <button class="chapter-btn" data-target="ch2">CHAPTER 2</button>
+          <div id="ch2" class="chapter-body">
+            <button class="item item-btn" type="button" data-href="video-note.html" aria-label="Chapter 2 video">
+              <div class="item-text">TOPIC 2 INTRO TO HCL<br><span class="muted">VIDEO</span></div>
+              <div class="item-icon video">▶</div>
+            </button>
+            <button class="item item-btn" type="button" data-href="note-exercise.html" aria-label="Chapter 2 file">
+              <div class="item-text">TOPIC 2 INTRO TO HCL<br><span class="muted">FILE</span></div>
+              <div class="item-icon file">📁</div>
+            </button>
+            <button class="item item-btn" type="button" disabled aria-disabled="true" aria-label="Chapter 2 test">
+              <div class="item-text">TEST</div>
+              <div class="item-icon done">✔</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <button class="chapter-btn" data-target="ch3">CHAPTER 3</button>
+          <div id="ch3" class="chapter-body">
+            <button class="item item-btn" type="button" data-href="video-note.html" aria-label="Chapter 3 video">
+              <div class="item-text">TOPIC 3 INTRO TO HCL<br><span class="muted">VIDEO</span></div>
+              <div class="item-icon video">▶</div>
+            </button>
+            <button class="item item-btn" type="button" data-href="note-exercise.html" aria-label="Chapter 3 file">
+              <div class="item-text">TOPIC 3 INTRO TO HCL<br><span class="muted">FILE</span></div>
+              <div class="item-icon file">📁</div>
+            </button>
+            <button class="item item-btn" type="button" disabled aria-disabled="true" aria-label="Chapter 3 test">
+              <div class="item-text">TEST</div>
+              <div class="item-icon done">✔</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <button class="chapter-btn" data-target="ch4">CHAPTER 4</button>
+          <div id="ch4" class="chapter-body">
+            <button class="item item-btn" type="button" data-href="video-note.html" aria-label="Chapter 4 video">
+              <div class="item-text">TOPIC 4 INTRO TO HCL<br><span class="muted">VIDEO</span></div>
+              <div class="item-icon video">▶</div>
+            </button>
+            <button class="item item-btn" type="button" data-href="note-exercise.html" aria-label="Chapter 4 file">
+              <div class="item-text">TOPIC 4 INTRO TO HCL<br><span class="muted">FILE</span></div>
+              <div class="item-icon file">📁</div>
+            </button>
+            <button class="item item-btn" type="button" disabled aria-disabled="true" aria-label="Chapter 4 test">
+              <div class="item-text">TEST</div>
+              <div class="item-icon done">✔</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <button class="chapter-btn" type="button" onclick="location.href='library.html'">LIBRARY</button>
+        </div>
+
+      </div>
+    </main>
+    <div class="cert-wrap">
+      <button class="cert-btn" aria-label="Download certificate" onclick="location.href='certificate1.html'">
+        <div class="cert-icon">📄</div>
+        <div class="cert-label">DOWNLOAD CERT</div>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Menu toggle (shared behavior)
+    (function(){
+      const wraps = Array.prototype.slice.call(document.querySelectorAll('.menu-wrap'));
+
+      function closeAll(exceptPanel){
+        wraps.forEach(function(wrap){
+          const panel = wrap.querySelector('.menu-panel');
+          const btn = wrap.querySelector('.dots');
+          if(!panel || !btn) return;
+          if(exceptPanel && panel === exceptPanel) return;
+          panel.style.display = 'none';
+          panel.setAttribute('aria-hidden', 'true');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      }
+
+      wraps.forEach(function(wrap){
+        const btn = wrap.querySelector('.dots');
+        const panel = wrap.querySelector('.menu-panel');
+        if(!btn || !panel) return;
+
+        panel.style.display = 'none';
+        panel.setAttribute('aria-hidden', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+
+        btn.addEventListener('click', function(e){
+          e.stopPropagation();
+          const isHidden = panel.getAttribute('aria-hidden') === 'true';
+          closeAll(panel);
+          panel.setAttribute('aria-hidden', String(!isHidden));
+          panel.style.display = isHidden ? 'flex' : 'none';
+          btn.setAttribute('aria-expanded', String(isHidden));
+        });
+      });
+
+      document.addEventListener('click', function(){ closeAll(); });
+      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeAll(); });
+    })();
+
+    // Chapter toggle handlers
+    document.querySelectorAll('.chapter-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        const id = btn.dataset.target;
+        const body = document.getElementById(id);
+        const open = body.classList.toggle('open');
+        // close others
+        document.querySelectorAll('.chapter-body').forEach(function(b){ if(b.id !== id) b.classList.remove('open'); });
+      });
+    });
+
+    // Item navigation (video/file/test)
+    document.querySelectorAll('.item-btn[data-href]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        const href = btn.dataset.href;
+
+        // Track where the user came from + which chapter they clicked.
+        // Chapter id is the closest .chapter-body container (e.g., ch1/ch2...).
+        const chapterBody = btn.closest('.chapter-body');
+        if(chapterBody && chapterBody.id){
+          sessionStorage.setItem('mn_chapter', chapterBody.id);
+        }
+
+        sessionStorage.setItem('mn_source', 'completed');
+
+        location.href = href;
+      });
+    });
+  </script>
+</body>
+</html>

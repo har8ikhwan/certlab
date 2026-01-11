@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Enter TAC — CertLab</title>
+  <link rel="stylesheet" href="tac.css">
+</head>
+<body>
+  <div class="screen">
+    <header class="top-logo" role="banner">
+      <div class="logo">cert<span>lab</span>.</div>
+    </header>
+
+    <main class="wrap">
+      <section class="tac-card" aria-labelledby="tac-title">
+        <h2 id="tac-title" class="tac-title">Enter TAC</h2>
+        <p id="tacHint" class="tac-hint" aria-live="polite"></p>
+
+        <form id="tacForm" class="tac-form" action="#" method="post" novalidate>
+          <label class="field">
+            <span class="label-text">TAC</span>
+            <input id="tacInput" class="input" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="Enter TAC" required>
+          </label>
+
+          <div id="tacMsg" class="tac-msg" role="status" aria-live="polite" hidden></div>
+
+          <button class="btn-primary" type="submit">Verify</button>
+          <a class="btn-secondary" href="forgotpass.html">Back</a>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      var tacHint = document.getElementById('tacHint');
+      var form = document.getElementById('tacForm');
+      var tacInput = document.getElementById('tacInput');
+      var msg = document.getElementById('tacMsg');
+
+      function showMessage(text, ok){
+        msg.textContent = text;
+        msg.classList.toggle('ok', !!ok);
+        msg.classList.toggle('error', !ok);
+        msg.hidden = false;
+      }
+
+      // Show where TAC was sent (if available)
+      try {
+        var email = sessionStorage.getItem('fp_email');
+        if (tacHint) tacHint.textContent = email ? ('We sent a TAC to ' + email + '.') : 'Enter the TAC you received in your email.';
+      } catch (e) {
+        if (tacHint) tacHint.textContent = 'Enter the TAC you received in your email.';
+      }
+
+      if (!form || !tacInput || !msg) return;
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        var code = (tacInput.value || '').trim();
+        if (!code){
+          showMessage('Please enter the TAC.', false);
+          tacInput.focus();
+          return;
+        }
+
+        try { sessionStorage.setItem('fp_tac', code); } catch (e2) {}
+        showMessage('TAC verified.', true);
+
+        setTimeout(function(){
+          location.href = 'newpass.html';
+        }, 700);
+      });
+    })();
+  </script>
+</body>
+</html>

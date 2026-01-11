@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Forgot Password — CertLab</title>
+  <link rel="stylesheet" href="forgotpass.css">
+</head>
+<body>
+  <div class="screen">
+    <header class="top-logo" role="banner">
+      <div class="logo">cert<span>lab</span>.</div>
+    </header>
+
+    <main class="wrap">
+      <section class="fp-card" aria-labelledby="fp-title">
+        <h2 id="fp-title" class="fp-title">Forgot password</h2>
+
+        <form id="fpForm" class="fp-form" action="#" method="post" novalidate>
+          <label class="field">
+            <span class="label-text">Email</span>
+            <input id="emailInput" class="input" type="email" name="email" placeholder="example@xxx.com" required>
+          </label>
+
+          <div id="fpMsg" class="fp-msg" role="status" aria-live="polite" hidden></div>
+
+          <button class="btn-primary" type="submit">Send TAC</button>
+          <a class="btn-secondary" href="login.html">Back</a>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      var form = document.getElementById('fpForm');
+      var email = document.getElementById('emailInput');
+      var msg = document.getElementById('fpMsg');
+
+      if (!form || !email || !msg) return;
+
+      function showMessage(text, ok){
+        msg.textContent = text;
+        msg.classList.toggle('ok', !!ok);
+        msg.classList.toggle('error', !ok);
+        msg.hidden = false;
+      }
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+
+        var value = (email.value || '').trim();
+        if (!value) {
+          showMessage('Please enter your email.', false);
+          email.focus();
+          return;
+        }
+
+        // Use built-in email validation
+        if (typeof email.checkValidity === 'function' && !email.checkValidity()) {
+          showMessage('Please enter a valid email address.', false);
+          email.focus();
+          return;
+        }
+
+        // Simulate sending TAC
+        try { sessionStorage.setItem('fp_email', value); } catch (e2) {}
+        showMessage('TAC has been sent to your email.', true);
+
+        // Go to TAC entry screen after a short feedback delay
+        setTimeout(function(){
+          location.href = 'tac.html';
+        }, 700);
+      });
+    })();
+  </script>
+</body>
+</html>

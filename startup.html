@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Starting — CertLab</title>
+  <link rel="stylesheet" href="startup.css">
+</head>
+<body>
+  <main class="startup" aria-label="App starting">
+    <div class="logo" aria-label="CertLab">
+      cert<span>lab</span>.
+    </div>
+
+    <div class="loader" role="status" aria-live="polite" aria-label="Loading">
+      <div class="bar" aria-hidden="true"><div id="barFill" class="fill"></div></div>
+      <div class="row">
+        <div class="label">Loading</div>
+        <div id="pct" class="pct">0%</div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      var fill = document.getElementById('barFill');
+      var pct = document.getElementById('pct');
+      if(!fill || !pct) return;
+
+      var durationMs = 5000;
+      var start = Date.now();
+
+      function tick(){
+        var elapsed = Date.now() - start;
+        var t = Math.min(1, elapsed / durationMs);
+        var value = Math.round(t * 100);
+        pct.textContent = value + '%';
+        fill.style.width = value + '%';
+
+        if(t < 1) {
+          requestAnimationFrame(tick);
+          return;
+        }
+
+        try{ sessionStorage.setItem('startupDone', '1'); }catch(e){}
+        // Go to the app's first functional page (current login screen)
+        location.href = 'login.html?from=startup';
+      }
+
+      requestAnimationFrame(tick);
+    })();
+  </script>
+</body>
+</html>

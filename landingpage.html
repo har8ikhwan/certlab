@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Landing — CertLab</title>
+  <link rel="stylesheet" href="landingpage.css">
+</head>
+<body>
+  <div class="screen">
+    <header class="lp-header">
+      <div class="profile">
+        <img class="avatar" src="pic/bruno.jpg" alt="avatar">
+        <div class="who">hi, <span class="name">bruno fernandes</span></div>
+      </div>
+      <div class="menu-wrap">
+        <button class="dots" aria-label="open menu" aria-expanded="false">⋯</button>
+        <div class="menu-panel" aria-hidden="true" style="display:none" role="menu">
+          <a class="menu-btn" href="profile.html" role="menuitem">👤 Profile</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="lp-main">
+      <div class="search">
+		<div class="search-box">
+			<input id="searchInput" class="search-input" placeholder="Search Certificate...." autocomplete="off" spellcheck="false">
+			<div id="searchSuggestions" class="search-suggestions" role="listbox" aria-label="Search suggestions" hidden></div>
+		</div>
+      </div>
+
+      <section class="lp-section" data-collapsed="false">
+        <div class="section-header">
+          <h3>Completed</h3>
+          <button class="toggle">›</button>
+        </div>
+        <div class="cards">
+          <article class="cert-card" data-href="menunotescompleted.html" role="link" tabindex="0" aria-label="Open completed notes: Google Project Management Professional Certificate">
+            <div class="logo-circle google">G</div>
+            <div class="card-body">
+              <h4>Human Computer Interaction Professional Certificate</h4>
+              <p>Peer-reviewed, evidence-based educational materials to advance your career in HCI design. Complete hands-on projects & build your portfolio.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="lp-section" data-collapsed="false">
+        <div class="section-header">
+          <h3>On going</h3>
+          <button class="toggle">›</button>
+        </div>
+        <div class="cards">
+          <article class="cert-card" data-href="courseinfoongoing.html" role="link" tabindex="0" aria-label="Open course: Python Programming Certificate By Google and Nvidia">
+            <div class="logo-circle coursera">C</div>
+            <div class="card-body">
+              <h4>Online HCI Professional Certificate By Google and Nvidia</h4>
+              <p>Peer-reviewed, evidence-based educational materials to advance your career in HCI design. Complete hands-on projects & build your portfolio.</p>
+            </div>
+          </article>
+          <article class="cert-card">
+            <div class="logo-circle other">D</div>
+            <div class="card-body">
+              <h4>Causal Diagrams: Draw Your Assumptions Before Your Conclusions</h4>
+              <p>Learn simple graphical rules that allow you to use intuitive pictures to improve study design and data analysis for causal inference.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="lp-section" data-collapsed="true">
+        <div class="section-header">
+          <h3>Explore more</h3>
+          <button class="toggle">›</button>
+        </div>
+        <div class="cards">
+          <article class="cert-card" data-href="courseinfoXenroll.html" role="link" tabindex="0" aria-label="Open course: Online HCI Professional Certificate By Google and Nvidia">
+            <div class="logo-circle coursera">C</div>
+            <div class="card-body">
+              <h4>Online HCI Professional Certificate By Google and Nvidia</h4>
+              <p>Short description to entice the learner to explore more content.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // Menu toggle (shared behavior)
+    (function(){
+      const wraps = Array.prototype.slice.call(document.querySelectorAll('.menu-wrap'));
+
+      function closeAll(exceptPanel){
+        wraps.forEach(function(wrap){
+          const panel = wrap.querySelector('.menu-panel');
+          const btn = wrap.querySelector('.dots');
+          if(!panel || !btn) return;
+          if(exceptPanel && panel === exceptPanel) return;
+          panel.style.display = 'none';
+          panel.setAttribute('aria-hidden', 'true');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      }
+
+      wraps.forEach(function(wrap){
+        const btn = wrap.querySelector('.dots');
+        const panel = wrap.querySelector('.menu-panel');
+        if(!btn || !panel) return;
+
+        panel.style.display = 'none';
+        panel.setAttribute('aria-hidden', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+
+        btn.addEventListener('click', function(e){
+          e.stopPropagation();
+          const isHidden = panel.getAttribute('aria-hidden') === 'true';
+          closeAll(panel);
+          panel.setAttribute('aria-hidden', String(!isHidden));
+          panel.style.display = isHidden ? 'flex' : 'none';
+          btn.setAttribute('aria-expanded', String(isHidden));
+        });
+      });
+
+      document.addEventListener('click', function(){ closeAll(); });
+      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeAll(); });
+    })();
+
+    // Section toggle
+    document.querySelectorAll('.lp-section').forEach(function(section){
+      const btn = section.querySelector('.toggle');
+      const cards = section.querySelector('.cards');
+      // init state
+      if(section.dataset.collapsed === 'true') cards.style.display = 'none';
+      btn.addEventListener('click', function(){
+        const isCollapsed = cards.style.display === 'none';
+        if(isCollapsed){ cards.style.display = ''; btn.textContent = '›'; }
+        else { cards.style.display = 'none'; btn.textContent = 'v'; }
+      });
+    });
+
+    // Card navigation (tap/click)
+    document.querySelectorAll('.cert-card[data-href]').forEach(function(card){
+      card.addEventListener('click', function(){
+        location.href = card.dataset.href;
+      });
+      card.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          location.href = card.dataset.href;
+        }
+      });
+    });
+
+  // Search suggestions (simple demo)
+  (function(){
+    const input = document.getElementById('searchInput');
+    const box = document.getElementById('searchSuggestions');
+    if(!input || !box) return;
+
+    const suggestions = [
+      {
+        label: 'Online HCI Courses',
+        href: 'courseinfoXenroll.html',
+        keywords: ['onl', 'online', 'hcl', 'hci', 'course', 'courses']
+      }
+    ];
+
+    function normalizeQuery(value){
+      return String(value || '')
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, ' ')
+        .replace('phyton', 'python');
+    }
+
+    function clear(){
+      box.innerHTML = '';
+      box.hidden = true;
+    }
+
+    function render(items){
+      box.innerHTML = '';
+      if(items.length === 0){
+        box.hidden = true;
+        return;
+      }
+
+      items.forEach(function(item){
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'suggestion-item';
+        btn.setAttribute('role', 'option');
+        btn.textContent = item.label;
+        btn.addEventListener('click', function(){
+          location.href = item.href;
+        });
+        box.appendChild(btn);
+      });
+
+      box.hidden = false;
+    }
+
+    function match(query){
+      if(!query) return [];
+      return suggestions.filter(function(s){
+        // If any keyword appears in the query, show it
+        return s.keywords.some(function(k){
+          return query.includes(k);
+        });
+      });
+    }
+
+    input.addEventListener('input', function(){
+      const q = normalizeQuery(input.value);
+      render(match(q));
+    });
+
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Escape'){
+        clear();
+        return;
+      }
+      if(e.key === 'Enter' && !box.hidden){
+        const first = box.querySelector('.suggestion-item');
+        if(first){
+          e.preventDefault();
+          first.click();
+        }
+      }
+    });
+
+    document.addEventListener('click', function(e){
+      if(e.target === input) return;
+      if(box.contains(e.target)) return;
+      clear();
+    });
+  })();
+  </script>
+</body>
+</html>

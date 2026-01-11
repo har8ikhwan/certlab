@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Profile — CertLab</title>
+  <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+  <div class="screen">
+    <header class="lp-header">
+	  <a class="home-link" href="landingpage.html" aria-label="Go to Home">
+    <span class="home-text" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-weight:600; font-size:1rem; letter-spacing:0.04em; color:#111;">HOME</span>
+	  </a>
+    </header>
+
+    <main class="profile-main">
+      <h2 class="title">PROFILE</h2>
+      <div class="hero">
+        <img class="big-avatar" src="pic/bruno.jpg" data-default-src="pic/bruno.jpg" alt="Bruno Fernandes profile photo">
+
+        <div id="editAvatarBtn" class="edit-icon" role="button" tabindex="0" aria-label="Change profile photo">
+          ✎
+          <input id="avatarInput" class="avatar-input" type="file" accept="image/*" aria-label="Choose profile photo">
+        </div>
+      </div>
+
+      <button id="resetAvatarBtn" class="reset-avatar" type="button" hidden>Reset Photo</button>
+
+      <h3 class="user-name">Bruno Fernandes</h3>
+      <div class="user-email">bruno.fernandes@gmail.com</div>
+
+      <h4 class="section">CERTIFICATES</h4>
+      <div class="cert-grid">
+        <div class="cert-tile">
+          <div class="cert-thumb">🎓</div>
+          <div class="cert-meta">
+            <div class="cert-title">ETHICAL HACKING COURSE</div>
+			<button class="view" type="button" onclick="location.href='certificate.html'">VIEW</button>
+          </div>
+        </div>
+
+        <a class="cert-tile plus" href="landingpage.html" aria-label="Get more certificates">
+          <div class="plus-icon">+</div>
+          <div class="cert-meta small">get more certificates</div>
+        </a>
+      </div>
+    </main>
+
+  <button id="logoutBottom" class="logout-bottom" type="button">LOGOUT</button>
+
+  <div id="logoutModal" class="modal" aria-hidden="true" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="logoutTitle">
+      <div id="logoutTitle" class="modal-title">Confirm Logout</div>
+      <div class="modal-text">Are you sure you want to log out?</div>
+      <div class="modal-actions">
+        <button id="logoutNo" class="modal-btn" type="button">No</button>
+        <a id="logoutYes" class="modal-btn primary" href="login.html">Yes</a>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <script>
+    (function(){
+      var btn = document.getElementById('logoutBottom');
+      var modal = document.getElementById('logoutModal');
+      var noBtn = document.getElementById('logoutNo');
+      if(!btn) return;
+    if(!modal || !noBtn) return;
+
+    function openModal(){
+      modal.hidden = false;
+      modal.setAttribute('aria-hidden', 'false');
+    }
+    function closeModal(){
+      modal.hidden = true;
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+      btn.addEventListener('click', function(){
+      openModal();
+      });
+
+    noBtn.addEventListener('click', function(){
+      closeModal();
+    });
+
+    modal.addEventListener('click', function(e){
+      // click outside the card closes
+      if(e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closeModal();
+    });
+    })();
+
+    (function(){
+      var avatarImg = document.querySelector('.big-avatar');
+      var editBtn = document.getElementById('editAvatarBtn');
+      var input = document.getElementById('avatarInput');
+      var resetBtn = document.getElementById('resetAvatarBtn');
+
+      function setResetVisible(visible){
+        if (!resetBtn) return;
+        resetBtn.hidden = !visible;
+      }
+
+      function defaultSrc(){
+        return (avatarImg && (avatarImg.getAttribute('data-default-src') || avatarImg.getAttribute('src'))) || '';
+      }
+
+      // Restore saved avatar on load
+      if (avatarImg) {
+        var saved = null;
+        try { saved = localStorage.getItem('profile_avatar_dataurl'); } catch (e) { saved = null; }
+        if (saved) {
+          avatarImg.src = saved;
+          setResetVisible(true);
+        } else {
+          setResetVisible(false);
+        }
+      }
+
+      if (!avatarImg || !editBtn || !input || !resetBtn) return;
+
+      function openPicker(){
+        try { input.click(); } catch (e) {}
+      }
+
+      // Clicking the icon hits the input overlay; this ensures keyboard works too.
+      editBtn.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openPicker();
+        }
+      });
+
+      input.addEventListener('change', function(){
+        var file = input.files && input.files[0];
+        if (!file) return;
+
+        if (!file.type || file.type.indexOf('image/') !== 0) {
+          alert('Please select an image file.');
+          input.value = '';
+          return;
+        }
+
+        var ok = confirm('Are you sure you want to change your profile picture?');
+        if (!ok) {
+          input.value = '';
+          return;
+        }
+
+        var reader = new FileReader();
+        reader.onload = function(){
+          var dataUrl = String(reader.result || '');
+          if (!dataUrl) return;
+          avatarImg.src = dataUrl;
+          try { localStorage.setItem('profile_avatar_dataurl', dataUrl); } catch (e) {}
+          setResetVisible(true);
+          input.value = '';
+        };
+        reader.readAsDataURL(file);
+      });
+
+      resetBtn.addEventListener('click', function(){
+        var ok = confirm('Reset profile photo to default?');
+        if (!ok) return;
+
+        try { localStorage.removeItem('profile_avatar_dataurl'); } catch (e) {}
+        avatarImg.src = defaultSrc();
+        input.value = '';
+        setResetVisible(false);
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Course — CertLab</title>
+  <link rel="stylesheet" href="courseinfoXenroll.css">
+</head>
+<body>
+  <div class="screen">
+    <header class="mn-header">
+      <button class="back" onclick="location.href='landingpage.html'">‹ Back</button>
+      <div class="title">Course</div>
+      <div class="menu-wrap">
+		<button class="dots" aria-label="open menu" aria-expanded="false">⋯</button>
+		<div class="menu-panel" aria-hidden="true" style="display:none" role="menu">
+			<a class="menu-btn" href="profile.html" role="menuitem">👤 Profile</a>
+			<a class="menu-btn" href="landingpage.html" role="menuitem">🏠 Home</a>
+		</div>
+      </div>
+    </header>
+
+    <main class="course-main">
+      <section class="course-card" aria-label="Course info">
+        <div class="course-head">
+          <div class="brand" aria-hidden="true">G</div>
+          <div class="course-title">
+            Online HCI Courses | Claim Your 3 Months Free | Get Certified in HCI
+          </div>
+        </div>
+
+        <p class="course-desc">
+          Peer-reviewed, evidence-based educational materials to advance your career in HCI design.
+          Complete hands-on projects & build your portfolio. Taught by Dr. Elias Vance, Lead Product
+          Designer and HCI Specialist, who has leveraged a decade and a half of expertise to design
+          interfaces that millions worldwide.
+        </p>
+
+        <div class="course-subtitle">What will you learn:</div>
+        <ul class="learn-list">
+          <li>Foundations of Digital UI/UX</li>
+          <li>Advanced Visual Design & Branding</li>
+          <li>Responsive and Interactive Design</li>
+          <li>Professional Workflow and Handoff</li>
+        </ul>
+
+        <button class="pill" type="button">Instructor Profile</button>
+
+        <div class="instructor-card" aria-label="Instructor info">
+          <div class="instructor-text">
+            <div class="instructor-name">Dr. Elias Vance</div>
+            <div class="instructor-role">Lead Product Designer and HCI Specialist</div>
+            <ul class="instructor-bullets">
+              <li>Founder and Chief Creative Officer (CCO) at Innovastream Digital</li>
+              <li>A renowned design consultancy focusing on high-traffic e-commerce and SaaS platforms.</li>
+            </ul>
+          </div>
+            <img class="instructor-avatar" src="pic/instructor2.jpg" alt="Instructor avatar">
+        </div>
+      </section>
+
+    <button id="enrollBtn" class="enroll" type="button">ENROLL NOW</button>
+    </main>
+  </div>
+
+  <div id="enrollModal" class="modal" aria-hidden="true" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="enrollTitle">
+      <div id="enrollTitle" class="modal-title">Confirm Enroll</div>
+      <div class="modal-text">Do you want to enroll this course?</div>
+      <div class="modal-actions">
+        <button id="enrollNo" class="modal-btn" type="button">No</button>
+        <button id="enrollYes" class="modal-btn primary" type="button">Yes</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="enrollToast" class="toast" role="status" aria-live="polite" hidden>
+    You have been enroll
+  </div>
+
+  <script>
+    // Menu toggle (shared behavior)
+    (function(){
+      const wraps = Array.prototype.slice.call(document.querySelectorAll('.menu-wrap'));
+
+      function closeAll(exceptPanel){
+        wraps.forEach(function(wrap){
+          const panel = wrap.querySelector('.menu-panel');
+          const btn = wrap.querySelector('.dots');
+          if(!panel || !btn) return;
+          if(exceptPanel && panel === exceptPanel) return;
+          panel.style.display = 'none';
+          panel.setAttribute('aria-hidden', 'true');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      }
+
+      wraps.forEach(function(wrap){
+        const btn = wrap.querySelector('.dots');
+        const panel = wrap.querySelector('.menu-panel');
+        if(!btn || !panel) return;
+
+        panel.style.display = 'none';
+        panel.setAttribute('aria-hidden', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+
+        btn.addEventListener('click', function(e){
+          e.stopPropagation();
+          const isHidden = panel.getAttribute('aria-hidden') === 'true';
+          closeAll(panel);
+          panel.setAttribute('aria-hidden', String(!isHidden));
+          panel.style.display = isHidden ? 'flex' : 'none';
+          btn.setAttribute('aria-expanded', String(isHidden));
+        });
+      });
+
+      document.addEventListener('click', function(){ closeAll(); });
+      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeAll(); });
+    })();
+
+  // Enroll confirmation
+  (function(){
+    var enrollBtn = document.getElementById('enrollBtn');
+    var modal = document.getElementById('enrollModal');
+    var noBtn = document.getElementById('enrollNo');
+    var yesBtn = document.getElementById('enrollYes');
+    var toast = document.getElementById('enrollToast');
+    if(!enrollBtn || !modal || !noBtn || !yesBtn || !toast) return;
+
+    function openModal(){
+      modal.hidden = false;
+      modal.setAttribute('aria-hidden', 'false');
+    }
+    function closeModal(){
+      modal.hidden = true;
+      modal.setAttribute('aria-hidden', 'true');
+    }
+    function showToast(){
+      toast.hidden = false;
+      toast.classList.add('show');
+    }
+
+    enrollBtn.addEventListener('click', function(){
+      openModal();
+    });
+
+    noBtn.addEventListener('click', function(){
+      closeModal();
+    });
+
+    yesBtn.addEventListener('click', function(){
+      closeModal();
+      if(navigator.vibrate){
+        navigator.vibrate([120, 60, 120]);
+      }
+      showToast();
+      setTimeout(function(){
+        location.href = 'courseinfoongoing.htm';
+      }, 1800);
+    });
+
+    modal.addEventListener('click', function(e){
+      if(e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closeModal();
+    });
+  })();
+  </script>
+</body>
+</html>

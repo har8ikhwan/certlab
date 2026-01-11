@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+	<title>Login — CertLab</title>
+	<link rel="stylesheet" href="login.css">
+</head>
+<body>
+	<div class="screen">
+		<header class="top-logo" role="banner">
+			<div class="logo" style="text-align:center; margin:0 0 18px;">
+				<img src="pic/logo.png" alt="CertLab wordmark reading certlab with a trailing period; black stylized lowercase letters on a transparent background; simple minimalist logo used in the app header conveying a professional modern tone." style="width:120px; height:auto; display:inline-block;">
+			</div>
+		</header>
+
+		<main class="wrap">
+			<section class="login-card" aria-labelledby="login-title">
+				<h1 id="login-title" class="card-title">Login Now!</h1>
+
+				<form id="loginForm" class="login-form" action="#" method="post" autocomplete="on">
+					<label class="field">
+						<span class="label-text">Email</span>
+						<input id="email" class="input" type="email" name="email" placeholder="johndoe@gmail.com" required autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false">
+					</label>
+
+					<label class="field">
+						<span class="label-text">Password</span>
+						<div class="password-wrap">
+							<input id="password" class="input" type="password" name="password" placeholder="●●●●●●●" required aria-describedby="pw-help" autocomplete="current-password">
+							<button type="button" class="eye-btn" aria-label="Show password" title="Show password"> 
+								<svg width="18" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+									<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" stroke="#111827" stroke-opacity="0.6" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+									<circle cx="12" cy="12" r="3" stroke="#111827" stroke-opacity="0.6" stroke-width="1.2" fill="#111827" fill-opacity="0.9"/>
+								</svg>
+							</button>
+						</div>
+					</label>
+
+					<div class="row small">
+						<label class="remember"><input type="checkbox" name="remember"> Remember Me</label>
+						<a class="link muted" href="forgotpass.html">Forgot Password?</a>
+					</div>
+
+					<button class="btn-login" type="submit">LOGIN</button>
+
+					<p class="signup">
+						Don't have an account? <a href="signup.html">Register now</a>
+					</p>
+				</form>
+			</section>
+		</main>
+	</div>
+
+	<script>
+		// Validate fields before navigating away
+		(function(){
+			const form = document.getElementById('loginForm');
+			const email = document.getElementById('email');
+			const password = document.getElementById('password');
+			if(!form || !email || !password) return;
+
+			function clearTestProgress(){
+				try {
+					['ch1','ch2','ch3','ch4'].forEach(function(ch){
+						try { localStorage.removeItem('hcl_test_result_' + ch); } catch (e) {}
+					});
+					try { localStorage.removeItem('hcl_test_last'); } catch (e2) {}
+					try { sessionStorage.removeItem('mn_source'); } catch (e3) {}
+					try { sessionStorage.removeItem('mn_chapter'); } catch (e4) {}
+				} catch (e5) {}
+			}
+
+			form.addEventListener('submit', function(e){
+				const emailValue = (email.value || '').trim();
+				const passwordValue = (password.value || '').trim();
+
+				// Reset any prior custom errors
+				email.setCustomValidity('');
+				password.setCustomValidity('');
+
+				// Must not be blank + must include "@"
+				if(emailValue.length === 0){
+					email.setCustomValidity('Email cannot be blank.');
+				} else if(!emailValue.includes('@')){
+					email.setCustomValidity('Email must include "@".');
+				}
+
+				if(passwordValue.length === 0){
+					password.setCustomValidity('Password cannot be blank.');
+				}
+
+				if(!form.checkValidity()){
+					e.preventDefault();
+					form.reportValidity();
+					return;
+				}
+
+				// Demo flow: prevent actual submit and go to landing page
+				e.preventDefault();
+				// Reset saved test results each time user logs in
+				clearTestProgress();
+				window.location.href = 'landingpage.html';
+			});
+		})();
+
+		// Toggle password visibility for demo
+		document.addEventListener('click', function(e){
+			const btn = e.target.closest('.eye-btn');
+			if(!btn) return;
+			const wrap = btn.closest('.password-wrap');
+			const input = wrap && wrap.querySelector('input');
+			if(!input) return;
+			if(input.type === 'password'){
+				input.type = 'text';
+				btn.title = 'Hide password';
+			} else {
+				input.type = 'password';
+				btn.title = 'Show password';
+			}
+		});
+	</script>
+</body>
+</html>
+

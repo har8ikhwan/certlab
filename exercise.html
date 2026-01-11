@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise</title>
+    <link rel="stylesheet" href="exercise.css">
+</head>
+<body>
+    <header class="topbar">
+        <h1 id="page-title">Exercise</h1>
+        <button id="menu-btn" class="dots">⋯</button>
+    </header>
+    <main>
+        <h2 id="question-title">Question 1</h2>
+        <form id="exercise-form">
+            <div class="question">
+                <p>What is 2 + 2?</p>
+                <label class="option"><input type="radio" name="q1" value="3"><span class="radio-circle"></span> 3</label>
+                <label class="option"><input type="radio" name="q1" value="4"><span class="radio-circle"></span> 4</label>
+                <label class="option"><input type="radio" name="q1" value="5"><span class="radio-circle"></span> 5</label>
+            </div>
+            <div class="question">
+                <p>What is the capital of France?</p>
+                <label class="option"><input type="radio" name="q2" value="London"><span class="radio-circle"></span> London</label>
+                <label class="option"><input type="radio" name="q2" value="Paris"><span class="radio-circle"></span> Paris</label>
+                <label class="option"><input type="radio" name="q2" value="Berlin"><span class="radio-circle"></span> Berlin</label>
+            </div>
+            <div class="question">
+                <p>What color is the sky?</p>
+                <label class="option"><input type="radio" name="q3" value="Blue"><span class="radio-circle"></span> Blue</label>
+                <label class="option"><input type="radio" name="q3" value="Green"><span class="radio-circle"></span> Green</label>
+                <label class="option"><input type="radio" name="q3" value="Red"><span class="radio-circle"></span> Red</label>
+            </div>
+            <div class="pager">
+                <button type="button" id="prev-btn" class="nav-btn">❮</button>
+                <div id="progress-pill">1 of 3</div>
+                <button type="button" id="next-btn" class="nav-btn">❯</button>
+                <button type="button" id="submit-btn" class="submit-check" aria-label="Submit">✔</button>
+            </div>
+            <div class="floating-menu" aria-hidden="true" hidden>
+                <button class="fm-btn" type="button" data-action="home">🏠</button>
+                <button class="fm-btn" type="button" data-action="profile">👤</button>
+                <button class="fm-btn" type="button" data-action="exit" id="fm-exit">↪</button>
+            </div>
+        </form>
+    </main>
+
+    <!-- Menu Modal -->
+    <div id="menu-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <button id="profile-btn">Profile</button>
+            <button id="menu-nav-btn">Menu</button>
+            <button id="exit-btn">Exit</button>
+        </div>
+    </div>
+
+    <!-- Submit Confirmation (matches test.html design) -->
+    <div id="submitModal" class="submit-modal" aria-hidden="true" hidden>
+        <div class="submit-card" role="dialog" aria-modal="true" aria-labelledby="submitTitle">
+            <div class="warn-icon" aria-hidden="true">⚠</div>
+            <div id="submitTitle" class="submit-title">SUBMIT CURRENT EXERCISE?</div>
+            <div class="submit-actions">
+                <button type="button" id="submitNo" class="submit-action no" aria-label="No">
+                    <span class="action-icon" aria-hidden="true">✖</span>
+                    <span class="action-label">NO</span>
+                </button>
+                <button type="button" id="submitYes" class="submit-action yes" aria-label="Yes">
+                    <span class="action-icon" aria-hidden="true">✔</span>
+                    <span class="action-label">YES</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="exercise.js"></script>
+</body>
+</html>

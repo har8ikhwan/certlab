@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Self Note — CertLab</title>
+  <link rel="stylesheet" href="selfnote.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <a class="back" href="library.html" aria-label="Back to notes">‹ Back</a>
+      <div class="title">Video 1: Intro to HCI</div>
+
+      <div class="menu-wrap">
+        <button class="dots" aria-label="open menu" aria-expanded="false">⋯</button>
+        <div class="menu-panel" aria-hidden="true" style="display:none" role="menu">
+          <a class="menu-btn" href="profile.html" role="menuitem">👤 Profile</a>
+          <a class="menu-btn" href="landingpage.html" role="menuitem">🏠 Home</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+      <textarea id="noteBox" class="note-box" aria-label="Note" spellcheck="false"></textarea>
+
+      <div class="actions">
+        <button id="saveBtn" class="btn primary" type="button" disabled>Save Note</button>
+        <button id="editBtn" class="btn" type="button">Edit Note</button>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Menu toggle
+    (function(){
+      const wraps = Array.prototype.slice.call(document.querySelectorAll('.menu-wrap'));
+
+      function closeAll(exceptPanel){
+        wraps.forEach(function(wrap){
+          const panel = wrap.querySelector('.menu-panel');
+          const btn = wrap.querySelector('.dots');
+          if(!panel || !btn) return;
+          if(exceptPanel && panel === exceptPanel) return;
+          panel.style.display = 'none';
+          panel.setAttribute('aria-hidden', 'true');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      }
+
+      wraps.forEach(function(wrap){
+        const btn = wrap.querySelector('.dots');
+        const panel = wrap.querySelector('.menu-panel');
+        if(!btn || !panel) return;
+
+        panel.style.display = 'none';
+        panel.setAttribute('aria-hidden', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+
+        btn.addEventListener('click', function(e){
+          e.stopPropagation();
+          const isHidden = panel.getAttribute('aria-hidden') === 'true';
+          closeAll(panel);
+          panel.setAttribute('aria-hidden', String(!isHidden));
+          panel.style.display = isHidden ? 'flex' : 'none';
+          btn.setAttribute('aria-expanded', String(isHidden));
+        });
+      });
+
+      document.addEventListener('click', function(){ closeAll(); });
+      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeAll(); });
+    })();
+
+    // Note edit/save
+    (function(){
+      const STORAGE_KEY = 'selfnote_text_v1';
+      const noteBox = document.getElementById('noteBox');
+      const saveBtn = document.getElementById('saveBtn');
+      const editBtn = document.getElementById('editBtn');
+      if(!noteBox || !saveBtn || !editBtn) return;
+
+      const DUMMY_TEXT = [
+        '• Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+        '• Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+        '• It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.',
+        '• It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'
+      ].join('\n\n');
+
+      function setEditing(enabled){
+        noteBox.readOnly = !enabled;
+        saveBtn.disabled = !enabled;
+      }
+
+      function load(){
+        const saved = localStorage.getItem(STORAGE_KEY);
+        noteBox.value = (saved && saved.trim()) ? saved : DUMMY_TEXT;
+        setEditing(false);
+      }
+
+      editBtn.addEventListener('click', function(){
+        setEditing(true);
+        noteBox.focus();
+      });
+
+      saveBtn.addEventListener('click', function(){
+        localStorage.setItem(STORAGE_KEY, noteBox.value || '');
+        setEditing(false);
+      });
+
+      load();
+    })();
+  </script>
+</body>
+</html>
